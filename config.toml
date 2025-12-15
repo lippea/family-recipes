@@ -1,0 +1,27 @@
+baseURL = 'https://lippea.github.io/family-recipes/'
+languageCode = 'zh-cn'
+title = '家庭菜单'
+
+[pagination]
+  pagerSize = 10
+
+[params]
+  description = "家庭菜单收藏"
+  author = "Family"
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
+[menu]
+  [[menu.main]]
+    identifier = "home"
+    name = "首页"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    identifier = "tags"
+    name = "标签"
+    url = "/tags/"
+    weight = 2
+

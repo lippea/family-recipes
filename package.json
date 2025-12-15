@@ -1,0 +1,10 @@
+{
+  "name": "family-recipes",
+  "version": "1.0.0",
+  "description": "家庭菜单网站",
+  "scripts": {
+    "dev": "hugo server -D",
+    "build": "hugo --minify"
+  }
+}
+

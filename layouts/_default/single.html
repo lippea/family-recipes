@@ -1,0 +1,41 @@
+{{ define "main" }}
+<article>
+    <h1>{{ .Title }}</h1>
+    
+    {{ if .Params.image }}
+    <img src="{{ .Params.image }}" alt="{{ .Title }}" class="recipe-hero-image" loading="lazy">
+    {{ end }}
+    
+    <div class="recipe-meta">
+        {{ if .Params.difficulty }}
+        <div><strong>难度:</strong> {{ .Params.difficulty }}</div>
+        {{ end }}
+        
+        {{ if .Params.servings }}
+        <div><strong>份量:</strong> {{ .Params.servings }} 人</div>
+        {{ end }}
+        
+        {{ if .Params.tags }}
+        <div class="tags">
+            <strong>标签:</strong>
+            {{ range .Params.tags }}
+            <a href="{{ "/tags/" | relURL }}{{ . | urlize }}" class="tag">{{ . }}</a>
+            {{ end }}
+        </div>
+        {{ end }}
+        
+        {{ if .Params.external_link }}
+        <div>
+            <a href="{{ .Params.external_link }}" target="_blank" rel="noopener noreferrer" class="external-link">
+                查看外部菜谱
+            </a>
+        </div>
+        {{ end }}
+    </div>
+
+    <div class="recipe-content">
+        {{ .Content }}
+    </div>
+</article>
+{{ end }}
+
