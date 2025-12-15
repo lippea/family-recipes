@@ -55,7 +55,7 @@ git push -u origin main
 
 GitHub Actions 会自动构建并部署。首次部署需要 2-5 分钟。
 
-部署完成后访问：`https://YOUR_USERNAME.github.io/family-recipes/`
+部署完成后访问：`https://lippea.github.io/family-recipes/`
 
 ## 添加新菜单
 
