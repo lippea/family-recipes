@@ -19,7 +19,6 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
         }
         .content-wrapper {
             display: flex;
@@ -36,10 +35,33 @@
             position: sticky;
             top: 2rem;
         }
-        .sidebar h3 {
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 1rem;
+        }
+        .sidebar h3 {
+            margin: 0;
             color: #2c3e50;
             font-size: 1.1rem;
+        }
+        .sidebar-close {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #666;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            transition: color 0.2s;
+        }
+        .sidebar-close:hover {
+            color: #2c3e50;
         }
         .sidebar-tags {
             display: flex;
@@ -66,6 +88,18 @@
         }
         .sidebar-tag {
             cursor: pointer;
+        }
+        .mobile-tags-toggle {
+            display: none;
+        }
+        .mobile-menu-toggle {
+            display: none;
+        }
+        .mobile-menu {
+            display: none;
+        }
+        .sidebar-overlay {
+            display: none;
         }
         .main-content {
             flex: 1;
@@ -179,9 +213,8 @@
         }
         .recipe-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            grid-template-columns: repeat(5, 1fr);
             gap: 1.5rem;
-            margin-top: 2rem;
         }
         .recipe-card {
             border: 1px solid #ddd;
@@ -368,20 +401,186 @@
             color: #666;
             font-size: 0.875rem;
         }
+        @media (max-width: 1200px) {
+            .recipe-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        @media (max-width: 900px) {
+            .recipe-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
         @media (max-width: 768px) {
+            header {
+                display: none;
+            }
+            .search-box {
+                display: none;
+            }
             .nav-links {
                 flex-direction: column;
                 gap: 1rem;
             }
+            main {
+                padding: 1rem;
+            }
             .recipe-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+            .recipe-card {
+                border: 0.5px solid #e0e0e0;
             }
             .content-wrapper {
                 flex-direction: column;
             }
-            .sidebar {
+            .mobile-menu-toggle {
+                display: block;
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                z-index: 1001;
+                background: #2c3e50;
+                color: white;
+                border: none;
+                border-radius: 50px;
+                width: 56px;
+                height: 56px;
+                font-size: 1.5rem;
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                transition: transform 0.2s, box-shadow 0.2s;
+            }
+            .mobile-menu-toggle:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+            }
+            .mobile-menu-toggle:active {
+                transform: translateY(0);
+            }
+            .mobile-menu {
+                display: block;
+                position: fixed;
+                bottom: 90px;
+                right: 20px;
+                z-index: 1000;
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+                min-width: 200px;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(20px);
+                transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+            }
+            .mobile-menu.open {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+            .mobile-menu-item {
+                display: block;
+                padding: 1rem 1.5rem;
+                color: #333;
+                text-decoration: none;
+                border-bottom: 1px solid #eee;
+                transition: background 0.2s;
+            }
+            .mobile-menu-item:first-child {
+                border-top-left-radius: 12px;
+                border-top-right-radius: 12px;
+            }
+            .mobile-menu-item:last-child {
+                border-bottom: none;
+                border-bottom-left-radius: 12px;
+                border-bottom-right-radius: 12px;
+            }
+            .mobile-menu-item:hover {
+                background: #f5f5f5;
+            }
+            .mobile-menu-search {
+                padding: 1rem 1.5rem;
+                border-bottom: 1px solid #eee;
+                position: relative;
+            }
+            .mobile-menu-search input {
                 width: 100%;
-                position: static;
+                padding: 0.5rem;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                font-size: 0.9rem;
+                box-sizing: border-box;
+            }
+            .mobile-menu-search .search-results {
+                position: absolute;
+                top: calc(100% + 0.5rem);
+                left: 1.5rem;
+                right: 1.5rem;
+                background: white;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                max-height: 300px;
+                overflow-y: auto;
+                z-index: 1002;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }
+            .mobile-tags-toggle {
+                display: block;
+                position: fixed;
+                bottom: 20px;
+                left: 20px;
+                z-index: 999;
+                background: #2c3e50;
+                color: white;
+                border: none;
+                border-radius: 50px;
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                transition: transform 0.2s, box-shadow 0.2s;
+            }
+            .mobile-tags-toggle:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+            }
+            .mobile-tags-toggle:active {
+                transform: translateY(0);
+            }
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 280px;
+                height: 100vh;
+                z-index: 1000;
+                transition: left 0.3s ease;
+                overflow-y: auto;
+                box-shadow: 2px 0 8px rgba(0,0,0,0.2);
+            }
+            .sidebar.open {
+                left: 0;
+            }
+            .sidebar-close {
+                display: block;
+            }
+            .sidebar-overlay {
+                display: block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s ease, visibility 0.3s ease;
+            }
+            .sidebar-overlay.active {
+                opacity: 1;
+                visibility: visible;
             }
         }
     </style>
@@ -400,6 +599,22 @@
         </div>
     </header>
 
+    <!-- 移动端菜单按钮 -->
+    <button class="mobile-menu-toggle" id="mobile-menu-toggle">☰</button>
+    
+    <!-- 移动端菜单 -->
+    <div class="mobile-menu" id="mobile-menu">
+        {{ if .IsHome }}
+        <div class="mobile-menu-search">
+            <input type="text" id="mobile-search-input" placeholder="搜索菜单...">
+            <div class="search-results" id="mobile-search-results"></div>
+        </div>
+        {{ end }}
+        {{ range .Site.Menus.main }}
+        <a href="{{ .URL | relURL }}" class="mobile-menu-item">{{ .Name }}</a>
+        {{ end }}
+    </div>
+
     <div class="container">
         {{ if .IsHome }}
         <div class="search-box">
@@ -410,8 +625,13 @@
 
         <div class="content-wrapper">
             {{ if ne .Type "tags" }}
-            <aside class="sidebar">
-                <h3>标签</h3>
+            <button class="mobile-tags-toggle" id="mobile-tags-toggle">标签</button>
+            <div class="sidebar-overlay" id="sidebar-overlay"></div>
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <h3>标签</h3>
+                    <button class="sidebar-close" id="sidebar-close" aria-label="关闭">×</button>
+                </div>
                 <div class="sidebar-tags">
                     {{ range .Site.Taxonomies.tags.ByCount }}
                     <a href="{{ .Page.RelPermalink }}" class="sidebar-tag filter-tag" data-tag="{{ .Page.Title }}">
@@ -464,6 +684,8 @@
             threshold: 0.4,
             includeScore: true
         });
+        // 将fuse实例保存到全局，供移动端搜索使用
+        window.fuse = fuse;
 
         // 过滤菜谱函数
         function filterRecipes() {
@@ -605,6 +827,149 @@
         });
     </script>
     {{ end }}
+
+    {{ if ne .Type "tags" }}
+    <script>
+        // 移动端标签列表控制
+        (function() {
+            const mobileToggle = document.getElementById('mobile-tags-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+
+            if (mobileToggle && sidebar && overlay) {
+                // 打开侧边栏
+                function openSidebar() {
+                    sidebar.classList.add('open');
+                    overlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+
+                // 关闭侧边栏
+                function closeSidebar() {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+
+                // 点击按钮打开
+                mobileToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    openSidebar();
+                });
+
+                // 点击遮罩层关闭
+                overlay.addEventListener('click', function() {
+                    closeSidebar();
+                });
+
+                // 点击关闭按钮关闭
+                const sidebarClose = document.getElementById('sidebar-close');
+                if (sidebarClose) {
+                    sidebarClose.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        closeSidebar();
+                    });
+                }
+
+                // 点击侧边栏内的链接后关闭（移动端）
+                if (window.innerWidth <= 768) {
+                    const sidebarLinks = sidebar.querySelectorAll('.sidebar-tag');
+                    sidebarLinks.forEach(link => {
+                        link.addEventListener('click', function() {
+                            closeSidebar();
+                        });
+                    });
+                }
+            }
+        })();
+    </script>
+    {{ end }}
+
+    <script>
+        // 移动端菜单控制
+        (function() {
+            const menuToggle = document.getElementById('mobile-menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            if (menuToggle && mobileMenu) {
+                // 切换菜单显示/隐藏
+                function toggleMenu() {
+                    mobileMenu.classList.toggle('open');
+                }
+
+                // 点击按钮切换菜单
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleMenu();
+                });
+
+                // 点击菜单项后关闭菜单
+                const menuItems = mobileMenu.querySelectorAll('.mobile-menu-item');
+                menuItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        mobileMenu.classList.remove('open');
+                    });
+                });
+
+                // 点击外部关闭菜单
+                document.addEventListener('click', function(e) {
+                    if (!mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+                        mobileMenu.classList.remove('open');
+                    }
+                });
+            }
+
+            // 移动端搜索功能（如果是首页）
+            {{ if .IsHome }}
+            // 等待首页搜索功能初始化完成
+            setTimeout(function() {
+                const mobileSearchInput = document.getElementById('mobile-search-input');
+                const mobileSearchResults = document.getElementById('mobile-search-results');
+
+                if (mobileSearchInput && mobileSearchResults && window.fuse) {
+                    mobileSearchInput.addEventListener('input', (e) => {
+                        const query = e.target.value.trim();
+                        
+                        if (query.length === 0) {
+                            mobileSearchResults.classList.remove('active');
+                            return;
+                        }
+
+                        const results = window.fuse.search(query).slice(0, 10);
+                        
+                        if (results.length === 0) {
+                            mobileSearchResults.innerHTML = '<div class="search-result-item">未找到相关菜单</div>';
+                        } else {
+                            mobileSearchResults.innerHTML = results.map(result => {
+                                const item = result.item;
+                                const tags = item.tags && item.tags.length > 0 ? item.tags.join(', ') : '';
+                                const imageHtml = item.image ? `<img src="${item.image}" alt="${item.title}" class="search-result-image">` : '';
+                                return `
+                                    <a href="${item.url}" class="search-result-item">
+                                        ${imageHtml}
+                                        <div class="search-result-content">
+                                            <div class="search-result-title">${item.title}</div>
+                                            ${tags ? `<div class="search-result-meta">${tags}</div>` : ''}
+                                        </div>
+                                    </a>
+                                `;
+                            }).join('');
+                        }
+                        
+                        mobileSearchResults.classList.add('active');
+                    });
+
+                    // 点击外部关闭搜索结果
+                    document.addEventListener('click', (e) => {
+                        if (!mobileSearchInput.contains(e.target) && !mobileSearchResults.contains(e.target)) {
+                            mobileSearchResults.classList.remove('active');
+                        }
+                    });
+                }
+            }, 100);
+            {{ end }}
+        })();
+    </script>
 </body>
 </html>
 

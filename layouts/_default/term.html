@@ -12,13 +12,6 @@
                     <h2>{{ .Title }}</h2>
                 </div>
             </div>
-            {{ if and .Params.tags (eq $.Type "categories") }}
-            <div class="recipe-card-tags">
-                {{ range .Params.tags }}
-                <button type="button" class="tag filter-tag" data-tag="{{ . }}">{{ . }}</button>
-                {{ end }}
-            </div>
-            {{ end }}
             {{ else }}
             <div class="recipe-card-content">
                 <h2>{{ .Title }}</h2>
