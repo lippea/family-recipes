@@ -6,40 +6,24 @@
     <div class="recipe-card" data-tags='{{ if .Params.tags }}{{ .Params.tags | jsonify }}{{ else }}[]{{ end }}'>
         <a href="{{ .RelPermalink }}">
             {{ if .Params.image }}
-            <img src="{{ .Params.image }}" alt="{{ .Title }}" class="recipe-card-image" loading="lazy">
-            {{ end }}
-            <div class="recipe-card-content">
-                <h2>{{ .Title }}</h2>
-                <div class="recipe-meta">
-                    {{ if .Params.difficulty }}
-                    <span>难度: {{ .Params.difficulty }}</span>
-                    {{ end }}
-                    {{ if .Params.servings }}
-                    <span>份量: {{ .Params.servings }} 人</span>
-                    {{ end }}
+            <div class="recipe-card-image-wrapper">
+                <img src="{{ .Params.image }}" alt="{{ .Title }}" class="recipe-card-image" loading="lazy">
+                <div class="recipe-card-title-overlay">
+                    <h2>{{ .Title }}</h2>
                 </div>
-                {{ if .Params.tags }}
-                <div class="tags">
-                    {{ range .Params.tags }}
-                    {{ $tag := . }}
-                    {{ if eq $.Type "categories" }}
-                    <button type="button" class="tag filter-tag" data-tag="{{ $tag }}">{{ $tag }}</button>
-                    {{ else }}
-                    {{ range $.Site.Taxonomies.tags }}
-                    {{ if eq .Page.Title $tag }}
-                    <a href="{{ .Page.RelPermalink }}" class="tag">{{ $tag }}</a>
-                    {{ end }}
-                    {{ end }}
-                    {{ end }}
-                    {{ end }}
-                </div>
-                {{ end }}
-                {{ if .Params.external_link }}
-                <div style="margin-top: 0.5rem; font-size: 0.8rem; color: #666;">
-                    🔗 有外部链接
-                </div>
+            </div>
+            {{ if and .Params.tags (eq $.Type "categories") }}
+            <div class="recipe-card-tags">
+                {{ range .Params.tags }}
+                <button type="button" class="tag filter-tag" data-tag="{{ . }}">{{ . }}</button>
                 {{ end }}
             </div>
+            {{ end }}
+            {{ else }}
+            <div class="recipe-card-content">
+                <h2>{{ .Title }}</h2>
+            </div>
+            {{ end }}
         </a>
     </div>
     {{ end }}
