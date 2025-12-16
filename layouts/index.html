@@ -1,6 +1,6 @@
 {{ define "main" }}
 <div class="recipe-grid">
-    {{ range first 12 .Site.RegularPages }}
+    {{ range .Site.RegularPages }}
     <div class="recipe-card" data-tags='{{ if .Params.tags }}{{ .Params.tags | jsonify }}{{ else }}[]{{ end }}'>
         <a href="{{ .RelPermalink }}">
             {{ if .Params.image }}
