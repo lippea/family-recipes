@@ -22,7 +22,7 @@
             {{ $tag := . }}
             {{ range $.Site.Taxonomies.tags }}
             {{ if eq .Page.Title $tag }}
-            <a href="{{ .Page.Permalink }}" class="tag">{{ $tag }}</a>
+            <a href="{{ .Page.RelPermalink }}" class="tag">{{ $tag }}</a>
             {{ end }}
             {{ end }}
             {{ end }}

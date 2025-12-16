@@ -4,7 +4,7 @@
 {{ if eq .Type "categories" }}
 <div class="taxonomy-list">
     {{ range .Data.Terms.ByCount }}
-    <a href="{{ .Page.Permalink }}" class="taxonomy-item">
+    <a href="{{ .Page.RelPermalink }}" class="taxonomy-item">
         <h3>{{ .Page.Title }}</h3>
         <span class="taxonomy-count">{{ .Count }} 个菜单</span>
     </a>
@@ -13,7 +13,7 @@
 {{ else if eq .Type "tags" }}
 <div class="taxonomy-list">
     {{ range .Data.Terms.ByCount }}
-    <a href="{{ .Page.Permalink }}" class="taxonomy-item">
+    <a href="{{ .Page.RelPermalink }}" class="taxonomy-item">
         <h3>{{ .Page.Title }}</h3>
         <span class="taxonomy-count">{{ .Count }} 个菜单</span>
     </a>
@@ -23,7 +23,7 @@
 <div class="recipe-grid">
     {{ range .Pages }}
     <div class="recipe-card">
-        <a href="{{ .Permalink }}">
+        <a href="{{ .RelPermalink }}">
             {{ if .Params.image }}
             <img src="{{ .Params.image }}" alt="{{ .Title }}" class="recipe-card-image" loading="lazy">
             {{ end }}
@@ -43,7 +43,7 @@
                 {{ $tag := . }}
                 {{ range $.Site.Taxonomies.tags }}
                 {{ if eq .Page.Title $tag }}
-                <a href="{{ .Page.Permalink }}" class="tag">{{ $tag }}</a>
+                <a href="{{ .Page.RelPermalink }}" class="tag">{{ $tag }}</a>
                 {{ end }}
                 {{ end }}
                 {{ end }}
