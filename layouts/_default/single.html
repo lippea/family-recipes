@@ -19,7 +19,12 @@
         <div class="tags">
             <strong>标签:</strong>
             {{ range .Params.tags }}
-            <a href="{{ "/tags/" | relURL }}{{ . | urlize }}" class="tag">{{ . }}</a>
+            {{ $tag := . }}
+            {{ range $.Site.Taxonomies.tags }}
+            {{ if eq .Page.Title $tag }}
+            <a href="{{ .Page.Permalink }}" class="tag">{{ $tag }}</a>
+            {{ end }}
+            {{ end }}
             {{ end }}
         </div>
         {{ end }}
