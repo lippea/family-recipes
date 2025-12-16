@@ -662,6 +662,13 @@
         const searchInput = document.getElementById('search-input');
         const searchResults = document.getElementById('search-results');
         const recipeGrid = document.querySelector('.recipe-grid');
+        // 获取搜索页面 URL
+        // 从当前路径提取 base path（例如 /family-recipes/）
+        const currentPath = window.location.pathname;
+        let searchPageUrl = '/search/';
+        if (currentPath.includes('/family-recipes/')) {
+            searchPageUrl = '/family-recipes/search/';
+        }
         
         // 获取所有菜单数据
         const recipes = [
@@ -733,45 +740,17 @@
             });
         });
 
-        // 搜索功能
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.trim();
-            
-            if (query.length === 0) {
-                searchResults.classList.remove('active');
-                return;
-            }
-
-            const results = fuse.search(query).slice(0, 10);
-            
-            if (results.length === 0) {
-                searchResults.innerHTML = '<div class="search-result-item">未找到相关菜单</div>';
-            } else {
-                searchResults.innerHTML = results.map(result => {
-                    const item = result.item;
-                    const tags = item.tags && item.tags.length > 0 ? item.tags.join(', ') : '';
-                    const imageHtml = item.image ? `<img src="${item.image}" alt="${item.title}" class="search-result-image">` : '';
-                    return `
-                        <a href="${item.url}" class="search-result-item">
-                            ${imageHtml}
-                            <div class="search-result-content">
-                                <div class="search-result-title">${item.title}</div>
-                                ${tags ? `<div class="search-result-meta">${tags}</div>` : ''}
-                            </div>
-                        </a>
-                    `;
-                }).join('');
-            }
-            
-            searchResults.classList.add('active');
-        });
-
-        // 点击外部关闭搜索结果
-        document.addEventListener('click', (e) => {
-            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
-                searchResults.classList.remove('active');
+        // 回车键跳转到搜索结果页面
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                e.preventDefault();
+                const query = searchInput.value.trim();
+                if (query.length > 0) {
+                    window.location.href = searchPageUrl + '?q=' + encodeURIComponent(query);
+                }
             }
         });
+
     </script>
     {{ end }}
 
@@ -926,43 +905,21 @@
                 const mobileSearchInput = document.getElementById('mobile-search-input');
                 const mobileSearchResults = document.getElementById('mobile-search-results');
 
-                if (mobileSearchInput && mobileSearchResults && window.fuse) {
-                    mobileSearchInput.addEventListener('input', (e) => {
-                        const query = e.target.value.trim();
-                        
-                        if (query.length === 0) {
-                            mobileSearchResults.classList.remove('active');
-                            return;
-                        }
-
-                        const results = window.fuse.search(query).slice(0, 10);
-                        
-                        if (results.length === 0) {
-                            mobileSearchResults.innerHTML = '<div class="search-result-item">未找到相关菜单</div>';
-                        } else {
-                            mobileSearchResults.innerHTML = results.map(result => {
-                                const item = result.item;
-                                const tags = item.tags && item.tags.length > 0 ? item.tags.join(', ') : '';
-                                const imageHtml = item.image ? `<img src="${item.image}" alt="${item.title}" class="search-result-image">` : '';
-                                return `
-                                    <a href="${item.url}" class="search-result-item">
-                                        ${imageHtml}
-                                        <div class="search-result-content">
-                                            <div class="search-result-title">${item.title}</div>
-                                            ${tags ? `<div class="search-result-meta">${tags}</div>` : ''}
-                                        </div>
-                                    </a>
-                                `;
-                            }).join('');
-                        }
-                        
-                        mobileSearchResults.classList.add('active');
-                    });
-
-                    // 点击外部关闭搜索结果
-                    document.addEventListener('click', (e) => {
-                        if (!mobileSearchInput.contains(e.target) && !mobileSearchResults.contains(e.target)) {
-                            mobileSearchResults.classList.remove('active');
+                if (mobileSearchInput && window.fuse) {
+                    // 回车键跳转到搜索结果页面
+                    mobileSearchInput.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.keyCode === 13) {
+                            e.preventDefault();
+                            const query = mobileSearchInput.value.trim();
+                            if (query.length > 0) {
+                                // 获取搜索页面 URL
+                                const currentPath = window.location.pathname;
+                                let searchPageUrl = '/search/';
+                                if (currentPath.includes('/family-recipes/')) {
+                                    searchPageUrl = '/family-recipes/search/';
+                                }
+                                window.location.href = searchPageUrl + '?q=' + encodeURIComponent(query);
+                            }
                         }
                     });
                 }
